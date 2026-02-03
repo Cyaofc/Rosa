@@ -334,32 +334,47 @@
       }
     }, { passive: true });
 
-    // ABRIR CARTA + MÚSICA
-const intro = document.getElementById('intro');
-const btnOpen = document.getElementById('openLetter');
-const music = document.getElementById('music');
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-btnOpen.addEventListener('click', () => {
-  music.muted = false;
-  music.volume = 0.6;
+  // ABRIR CARTA + MÚSICA
+  const intro = document.getElementById('intro');
+  const btnOpen = document.getElementById('openLetter');
+  const music = document.getElementById('music');
 
-  music.play()
-    .then(() => {
-      console.log('🎵 Música iniciada correctamente');
-    })
-    .catch(err => {
-      console.error('❌ Error audio:', err);
+  console.log('Intro:', intro);
+  console.log('Botón:', btnOpen);
+  console.log('Audio:', music);
+
+  if (intro && btnOpen && music) {
+    btnOpen.addEventListener('click', () => {
+      music.muted = false;
+      music.volume = 0.6;
+
+      music.play()
+        .then(() => {
+          console.log('🎵 Música iniciada correctamente');
+        })
+        .catch(err => {
+          console.error('❌ Error audio:', err);
+        });
+
+      intro.style.opacity = '0';
+      setTimeout(() => {
+        intro.style.display = 'none';
+      }, 800);
     });
+  } else {
+    console.error('❌ Falta intro, botón o audio en el HTML');
+  }
 
-  intro.style.opacity = '0';
-  setTimeout(() => {
-    intro.style.display = 'none';
-  }, 800);
 });
 </script>
 
+
 </body>
 </html>
+
 
 
 
