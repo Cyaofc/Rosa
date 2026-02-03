@@ -198,18 +198,17 @@
     <div class="letter">
       <h2>💌 Has recibido una carta</h2>
       <p>Toca aquí para abrirla</p>
-      <button id="openLetter">Abrir</button>
+      <button id="openLetter">Abrir carta 💌</button>
     </div>
   </div>
 
   <!-- MÚSICA -->
 
-  <audio id="music" loop>
-    <source src="musica.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="music" src="musica.mp3"></audio>
+
 
   <header>
-    <h1>Rosa, aquí está el por qué te amo tanto ❤️</h1>
+    <h1>Quiero que nunca olvides que te amo❤️</h1>
   </header>
 
   <!-- SECCIÓN 1 -->
@@ -217,9 +216,9 @@
     <div class="content">
       <img src="foto1.jpg" alt="Foto de Rosa" loading="lazy" />
       <p>
-        Aquí va el primer texto bonito.
-        Puedes escribir lo que sientes, recuerdos,
-        o lo que quieras que ella lea cuando llegue aquí.
+        La manera en que nos conocimos si o si nos
+        aseguraba una sola cosa y era una relacion a
+        distancia sin nunca poder verte:(
       </p>
     </div>
   </section>
@@ -228,8 +227,9 @@
   <section>
     <div class="content">
       <p>
-        Este bloque puede ser otro recuerdo,
-        una promesa, o simplemente algo que amas de ella.
+        Que bonito fue cuando todo cambio y te conoci por primera vez
+        se que no fue lo que esperabas tal vez pero el hecho de 
+        poder haber cambiado eso a mas real fue genial
       </p>
       <img src="foto2.jpg" alt="Otro momento" loading="lazy" />
     </div>
@@ -278,7 +278,7 @@
   </section>
 
   <footer>
-    Hecho con ❤️ por ti
+    Hecho para hacerte recordar a diario que te amo
   </footer>
 
   <!-- SCRIPT -->
@@ -335,32 +335,30 @@
     }, { passive: true });
 
     // ABRIR CARTA + MÚSICA
-    const intro = document.getElementById('intro');
-    const btnOpen = document.getElementById('openLetter');
-    const music = document.getElementById('music');
+  <script>
+const intro = document.getElementById('intro');
+const btnOpen = document.getElementById('openLetter');
+const music = document.getElementById('music');
 
-    btnOpen.addEventListener('click', () => {
-      music.volume = 0.4;
-      music.play().catch(() => {});
-      intro.style.opacity = '0';
-      setTimeout(() => intro.remove(), 800);
+btnOpen.addEventListener('click', () => {
+  music.muted = false;
+  music.volume = 0.6;
+
+  music.play()
+    .then(() => {
+      console.log('🎵 Música iniciada correctamente');
+    })
+    .catch(err => {
+      console.error('❌ Error audio:', err);
     });
 
-    // En caso de que el navegador impida la reproducción, reintentar al siguiente click/touch
-    function tryPlayOnInteraction() {
-      if (music.paused) {
-        music.play().then(() => {
-          document.removeEventListener('click', tryPlayOnInteraction);
-          document.removeEventListener('touchstart', tryPlayOnInteraction);
-        }).catch(() => {});
-      } else {
-        document.removeEventListener('click', tryPlayOnInteraction);
-        document.removeEventListener('touchstart', tryPlayOnInteraction);
-      }
-    }
-    document.addEventListener('click', tryPlayOnInteraction);
-    document.addEventListener('touchstart', tryPlayOnInteraction);
-  </script>
+  intro.style.opacity = '0';
+  setTimeout(() => {
+    intro.style.display = 'none';
+  }, 800);
+});
+</script>
 
 </body>
 </html>
+
