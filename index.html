@@ -281,86 +281,87 @@
     Hecho para hacerte recordar a diario que te amo
   </footer>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+  
+  <!-- SCRIPT -->
+  <script>
+    // APARECER CONTENIDO AL SCROLL
+    const contents = document.querySelectorAll('.content');
 
-  // APARECER CONTENIDO AL SCROLL
-  const contents = document.querySelectorAll('.content');
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('show');
-      }
-    });
-  }, { threshold: 0.3 });
-  contents.forEach(c => observer.observe(c));
-
-  // ANIMAR GALERÍA
-  const galleries = document.querySelectorAll('.gallery');
-  if (galleries.length) {
-    const galleryObserver = new IntersectionObserver((entries, obs) => {
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          const imgs = entry.target.querySelectorAll('img');
-          imgs.forEach((img, i) => {
-            setTimeout(() => img.classList.add('show'), i * 250);
-          });
-          obs.unobserve(entry.target);
+          entry.target.classList.add('show');
         }
       });
-    }, { threshold: 0.2 });
-    galleries.forEach(g => galleryObserver.observe(g));
-  }
+    }, { threshold: 0.3 });
 
-  // CORAZONES AL SCROLL
-  let ticking = false;
-  function createHeart() {
-    const heart = document.createElement('div');
-    heart.className = 'heart';
-    heart.textContent = '❤️';
-    heart.style.left = (Math.random() * 90 + 5) + 'vw';
-    heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 5000);
-    ticking = false;
-  }
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(createHeart);
-      ticking = true;
+    contents.forEach(c => observer.observe(c));
+
+    // ANIMAR GALERÍA: cuando la galería entra, mostrar imágenes una a una
+    const galleries = document.querySelectorAll('.gallery');
+    if (galleries.length) {
+      const galleryObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const imgs = Array.from(entry.target.querySelectorAll('img'));
+            imgs.forEach((img, i) => {
+              setTimeout(() => img.classList.add('show'), i * 250);
+            });
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      galleries.forEach(g => galleryObserver.observe(g));
     }
-  }, { passive: true });
 
-  // ABRIR CARTA + MÚSICA
-  const intro = document.getElementById('intro');
-  const btnOpen = document.getElementById('openLetter');
-  const music = document.getElementById('music');
+    // CORAZONES AL HACER SCROLL (optimizado)
+    let ticking = false;
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '❤️';
+      const left = Math.random() * 90 + 5; // 5vw..95vw
+      heart.style.left = left + 'vw';
+      heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(createHeart);
+        ticking = true;
+      }
+    }, { passive: true });
 
-  console.log(intro, btnOpen, music);
+    // ABRIR CARTA + MÚSICA
+    const intro = document.getElementById('intro');
+    const btnOpen = document.getElementById('openLetter');
+    const music = document.getElementById('music');
 
-  if (intro && btnOpen && music) {
     btnOpen.addEventListener('click', () => {
-      music.muted = false;
-      music.volume = 0.6;
-
-      music.play()
-        .then(() => console.log('🎵 Música iniciada'))
-        .catch(err => console.error('❌ Audio error:', err));
-
+      music.volume = 0.4;
+      music.play().catch(() => {});
       intro.style.opacity = '0';
-      setTimeout(() => intro.style.display = 'none', 800);
+      setTimeout(() => intro.remove(), 800);
     });
-  } else {
-    console.error('❌ Falta intro, botón o audio');
-  }
 
-});
-</script>
+    // En caso de que el navegador impida la reproducción, reintentar al siguiente click/touch
+    function tryPlayOnInteraction() {
+      if (music.paused) {
+        music.play().then(() => {
+          document.removeEventListener('click', tryPlayOnInteraction);
+          document.removeEventListener('touchstart', tryPlayOnInteraction);
+        }).catch(() => {});
+      } else {
+        document.removeEventListener('click', tryPlayOnInteraction);
+        document.removeEventListener('touchstart', tryPlayOnInteraction);
+      }
+    }
+    document.addEventListener('click', tryPlayOnInteraction);
+    document.addEventListener('touchstart', tryPlayOnInteraction);
+  </script>
 
-
-
-
-
-
-
-
+</body>
+</html>
