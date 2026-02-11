@@ -7,14 +7,14 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 body{
   margin:0;
   min-height:100vh;
-  background:linear-gradient(135deg,#ff9dc4,#ffdde1,#fff0f5);
-  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(135deg, #f7d9e4, #fcdde1, #ffebee); /* Gradiente más suave */
+  font-family:'Poppins', 'Segoe UI', sans-serif; /* Poppins como fuente principal */
   color:#4a2c3f;
   overflow-x:hidden;
 }
@@ -42,71 +42,93 @@ body{
   justify-content:center;
   text-align:center;
   z-index:100;
-  background:linear-gradient(135deg,#ff9dc4,#ffdde1,#fff0f5);
+  background:linear-gradient(135deg,#f7d9e4,#fcdde1,#ffebee); /* Gradiente más suave */
   transition:opacity .8s ease;
 }
 #intro-screen.hidden{opacity:0;pointer-events:none;}
 
-.envelope-icon{font-size:6rem;margin-bottom:.5em;color:#c71585;}
+.envelope-icon{font-size:7rem;margin-bottom:.3em;color:#c71585;animation:pulse 2s infinite;} /* Icono más grande y con animación */
 .intro-title{
   font-family:'Great Vibes',cursive;
-  font-size:3.5rem;
+  font-size:4rem; /* Título más grande */
   color:#d63384;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 .intro-text{
   font-family:'Dancing Script',cursive;
-  font-size:2rem;
+  font-size:2.2rem; /* Texto de intro más grande */
   color:#c71585;
+  margin-top: .5em;
 }
 .open-btn{
-  margin-top:1.5em;
-  padding:14px 40px;
-  font-size:1.3rem;
+  margin-top:2em;
+  padding:15px 45px;
+  font-size:1.4rem;
   font-family:'Dancing Script',cursive;
-  background:#ff69b4;
+  background:linear-gradient(45deg, #ff69b4, #ff8dc4); /* Gradiente para el botón */
   color:white;
   border:none;
   border-radius:50px;
   cursor:pointer;
-  box-shadow:0 6px 20px rgba(255,105,180,.4);
+  box-shadow:0 8px 25px rgba(255,105,180,.5); /* Sombra más pronunciada */
+  transition:all .3s ease;
+}
+.open-btn:hover{
+  transform:scale(1.05); /* Efecto de escala al pasar el ratón */
+  box-shadow:0 12px 35px rgba(255,105,180,.6);
+}
+
+/* Animación de pulso para el icono del sobre */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 /* Contenido principal */
 #main-content{
   display:none;
-  padding:20px;
+  padding:40px 20px; /* Más padding */
   text-align:center;
   position:relative;
   z-index:10;
+  max-width:900px; /* Ancho máximo para el contenido */
+  margin:0 auto; /* Centrar contenido */
 }
 
 h1{
   font-family:'Great Vibes',cursive;
-  font-size:3rem;
+  font-size:4.5rem; /* Título principal más grande */
   color:#d63384;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: .2em;
 }
 
 .to{
   font-family:'Dancing Script',cursive;
-  font-size:2rem;
+  font-size:2.5rem; /* Texto "Mi amor hermoso" más grande */
   color:#c71585;
+  margin-bottom: 1.5em;
 }
 
 /* Carta */
 .letter{
   max-width:700px;
-  background:rgba(255,255,255,.9);
-  padding:2rem;
-  border-radius:20px;
-  margin:2em auto;
-  font-size:1.1rem;
-  line-height:1.7;
+  background:rgba(255,255,255,.95); /* Fondo ligeramente más opaco */
+  padding:2.5rem; /* Más padding */
+  border-radius:25px; /* Bordes más redondeados */
+  margin:2.5em auto; /* Más margen */
+  font-size:1.2rem; /* Fuente más grande */
+  line-height:1.8;
   position:relative;
+  box-shadow:0 10px 30px rgba(0,0,0,.15); /* Sombra más suave */
+  text-align: left; /* Alinear texto a la izquierda */
+  color: #333; /* Color de texto más oscuro para legibilidad */
 }
 .typing{
   white-space:pre-wrap;
   overflow:hidden;
-  border-right:3px solid #c71585;
+  border-right:3px solid #ff69b4; /* Color del cursor de escritura */
   animation:blink .8s step-end infinite;
 }
 @keyframes blink{50%{border-color:transparent;}}
@@ -115,42 +137,82 @@ h1{
 .gallery{
   display:flex;
   flex-wrap:wrap;
-  gap:15px;
+  gap:20px; /* Más espacio entre imágenes */
   justify-content:center;
+  margin-top: 3em;
 }
 .gallery img{
-  width:140px;
-  height:140px;
+  width:160px; /* Imágenes ligeramente más grandes */
+  height:160px;
   object-fit:cover;
-  border-radius:15px;
-  box-shadow:0 5px 15px rgba(0,0,0,.2);
+  border-radius:20px; /* Bordes más redondeados */
+  box-shadow:0 8px 20px rgba(0,0,0,.25); /* Sombra más pronunciada */
+  transition:transform .3s ease;
+}
+.gallery img:hover{
+  transform:scale(1.08); /* Efecto de escala al pasar el ratón */
 }
 
 /* Contador */
 .countdown{
   display:flex;
   justify-content:center;
-  gap:10px;
+  gap:15px; /* Más espacio */
   flex-wrap:wrap;
-  margin:1.5em 0;
+  margin:2em 0;
 }
 .countdown-item{
   background:#fff;
-  padding:10px 15px;
-  border-radius:10px;
+  padding:12px 20px; /* Más padding */
+  border-radius:15px; /* Bordes más redondeados */
+  box-shadow:0 5px 15px rgba(0,0,0,.1); /* Sombra suave */
 }
 .countdown-item span{
-  font-size:1.5rem;
+  font-size:1.8rem; /* Fuente más grande */
   font-weight:bold;
   color:#ff1493;
+}
+.countdown-item div{
+  font-size:.9rem;
+  color:#666;
+}
+
+/* Heart Beat y firma */
+.heart-beat{
+  font-size: 3rem;
+  color: #ff1493;
+  animation: heartbeat 1.5s infinite;
+  margin-top: 2em;
+}
+
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.1); }
+  50% { transform: scale(1); }
+  75% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.signature{
+  font-family:'Dancing Script',cursive;
+  font-size:1.8rem;
+  color:#c71585;
+  margin-top:1.5em;
+  text-align: center;
+  line-height: 1.4;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.05);
 }
 
 /* Responsive */
 @media(min-width:768px){
   .gallery img{width:220px;height:220px;}
-  h1{font-size:4rem;}
-}
-</style>
+  h1{font-size:5.5rem;}
+  .intro-title{font-size:5rem;}
+  .intro-text{font-size:2.5rem;}
+  .open-btn{font-size:1.6rem;padding:18px 50px;}
+  .letter{padding:3rem;font-size:1.3rem;}
+  .to{font-size:3rem;}
+}</style>
 </head>
 <body>
 
@@ -165,7 +227,7 @@ h1{
 
 <div id="main-content">
   <h1>Feliz San Valentín</h1>
-  <div class="to">Mi amor hermosa 💕</div>
+  <div class="to">Mi amor hermoso 💕</div>
 
   <div class="countdown">
     <div class="countdown-item"><span id="days">0</span><div>Días</div></div>
@@ -186,6 +248,12 @@ h1{
     <img src="img4.jpg" alt="Tamo">
     <img src="img5.jpg" alt="Tamo">
   </div>
+
+  <div class="heart-beat">❤️</div>
+  <div class="signature">
+   Te amo infinito,<br>
+    Rosa 💖
+  </div>
 </div>
 
 <audio id="loveSong" src="musica.mp3" loop></audio>
@@ -200,6 +268,8 @@ function createHeart(){
   heart.innerHTML=["❤️","💗","💖","💕"][Math.floor(Math.random()*4)];
   heart.style.left=Math.random()*100+"vw";
   heart.style.animationDuration=(Math.random()*5+8)+"s";
+  heart.style.animationIterationCount = "infinite"; /* Asegurar que la animación se repita */
+  heart.style.setProperty('--rotation', Math.random()*720+'deg'); /* Variable para rotación */
   document.getElementById("heartsContainer").appendChild(heart);
   setTimeout(()=>heart.remove(),12000);
 }
@@ -276,4 +346,3 @@ setInterval(()=>{
 
 </body>
 </html>
-
