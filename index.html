@@ -1,367 +1,278 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rosa – Aquí está el por qué te amo tanto</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mi Amor, Feliz San Valentín 💞</title>
 
-  <!-- ESTILOS BASE -->
-  <style>
-    :root {
-      --negro: #0b0b0b;
-      --rojo: #b30000;
-      --rojo-claro: #ff3b3b;
-      --blanco: #ffffff;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#ff9dc4,#ffdde1,#fff0f5);
+  font-family:'Segoe UI',sans-serif;
+  color:#4a2c3f;
+  overflow-x:hidden;
+}
 
-    body {
-      background: linear-gradient(180deg, var(--negro), #140000);
-      color: var(--blanco);
-      overflow-x: hidden;
-    }
+/* Corazones */
+.hearts{position:fixed;inset:0;pointer-events:none;z-index:1;}
+.heart{
+  position:absolute;
+  font-size:1.5rem;
+  animation:float 10s linear infinite;
+  opacity:.8;
+}
+@keyframes float{
+  0%{transform:translateY(100vh) rotate(0deg);}
+  100%{transform:translateY(-20vh) rotate(720deg);opacity:0;}
+}
 
-    header {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-    }
+/* Pantalla inicial */
+#intro-screen{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  z-index:100;
+  background:linear-gradient(135deg,#ff9dc4,#ffdde1,#fff0f5);
+  transition:opacity .8s ease;
+}
+#intro-screen.hidden{opacity:0;pointer-events:none;}
 
-    header h1 {
-      font-size: 3rem;
-      color: var(--rojo-claro);
-      text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-      max-width: 900px;
-    }
+.envelope-icon{font-size:6rem;margin-bottom:.5em;color:#c71585;}
+.intro-title{
+  font-family:'Great Vibes',cursive;
+  font-size:3.5rem;
+  color:#d63384;
+}
+.intro-text{
+  font-family:'Dancing Script',cursive;
+  font-size:2rem;
+  color:#c71585;
+}
+.open-btn{
+  margin-top:1.5em;
+  padding:14px 40px;
+  font-size:1.3rem;
+  font-family:'Dancing Script',cursive;
+  background:#ff69b4;
+  color:white;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+  box-shadow:0 6px 20px rgba(255,105,180,.4);
+}
 
-    section {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4rem 2rem;
-      position: relative;
-    }
+/* Contenido principal */
+#main-content{
+  display:none;
+  padding:20px;
+  text-align:center;
+  position:relative;
+  z-index:10;
+}
 
-    .content {
-      max-width: 900px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: center;
-      opacity: 0;
-      transform: translateY(60px);
-      transition: all 1s ease;
-    }
+h1{
+  font-family:'Great Vibes',cursive;
+  font-size:3rem;
+  color:#d63384;
+}
 
-    .content.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+.to{
+  font-family:'Dancing Script',cursive;
+  font-size:2rem;
+  color:#c71585;
+}
 
-    .content img {
-      width: 100%;
-      border-radius: 20px;
-      border: 2px solid var(--rojo);
-      box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
-    }
+/* Carta */
+.letter{
+  max-width:700px;
+  background:rgba(255,255,255,.9);
+  padding:2rem;
+  border-radius:20px;
+  margin:2em auto;
+  font-size:1.1rem;
+  line-height:1.7;
+  position:relative;
+}
+.typing{
+  white-space:pre-wrap;
+  overflow:hidden;
+  border-right:3px solid #c71585;
+  animation:blink .8s step-end infinite;
+}
+@keyframes blink{50%{border-color:transparent;}}
 
-    .content p {
-      font-size: 1.2rem;
-      line-height: 1.7;
-    }
+/* Galería */
+.gallery{
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+  justify-content:center;
+}
+.gallery img{
+  width:140px;
+  height:140px;
+  object-fit:cover;
+  border-radius:15px;
+  box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
 
-    /* CORAZONES */
-    .heart {
-      position: fixed;
-      top: -20px;
-      font-size: 24px;
-      color: var(--rojo-claro);
-      animation: fall linear forwards;
-      pointer-events: none;
-      z-index: 999;
-    }
+/* Contador */
+.countdown{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:1.5em 0;
+}
+.countdown-item{
+  background:#fff;
+  padding:10px 15px;
+  border-radius:10px;
+}
+.countdown-item span{
+  font-size:1.5rem;
+  font-weight:bold;
+  color:#ff1493;
+}
 
-    @keyframes fall {
-      to {
-        transform: translateY(110vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    footer {
-      padding: 2rem;
-      text-align: center;
-      color: #aaa;
-      font-size: 0.9rem;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 2.2rem;
-      }
-
-      .content {
-        grid-template-columns: 1fr;
-      }
-    }
-  
-    /* GALERÍA: estilo y animación de entrada escalonada */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-      max-width: 900px;
-      margin: 2rem auto;
-      align-items: start;
-    }
-
-    .gallery img {
-      width: 100%;
-      border-radius: 20px;
-      border: 2px solid var(--rojo);
-      box-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
-      opacity: 0;
-      transform: translateY(20px) scale(.98);
-      transition: opacity 600ms ease, transform 600ms ease;
-    }
-
-    .gallery img.show {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-
-    /* INTRO CARTA */
-    .intro {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle, #140000, #000);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      transition: opacity 0.6s ease;
-    }
-
-    .letter {
-      background: #0b0b0b;
-      border: 2px solid var(--rojo);
-      padding: 3rem 2.5rem;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 0 40px rgba(255,0,0,.6);
-      animation: pulse 2s infinite;
-    }
-
-    .letter h2 {
-      color: var(--rojo-claro);
-      margin-bottom: 1rem;
-    }
-
-    .letter p {
-      margin-bottom: 1.5rem;
-      color: #ddd;
-    }
-
-    .letter button {
-      background: var(--rojo);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-      100% { transform: scale(1); }
-    }
-
-  </style>
+/* Responsive */
+@media(min-width:768px){
+  .gallery img{width:220px;height:220px;}
+  h1{font-size:4rem;}
+}
+</style>
 </head>
 <body>
 
-  <!-- PANTALLA INICIAL TIPO CARTA -->
-  <div id="intro" class="intro">
-    <div class="letter">
-      <h2>💌 Has recibido una carta</h2>
-      <p>Toca aquí para abrirla</p>
-      <button id="openLetter">Abrir</button>
-    </div>
+<div class="hearts" id="heartsContainer"></div>
+
+<div id="intro-screen">
+  <div class="envelope-icon">💌</div>
+  <h1 class="intro-title">Has recibido una carta</h1>
+  <p class="intro-text">Toca aquí para abrirla</p>
+  <button class="open-btn" id="openLetter">Abrir</button>
+</div>
+
+<div id="main-content">
+  <h1>Feliz San Valentín</h1>
+  <div class="to">Mi amor hermoso 💕</div>
+
+  <div class="countdown">
+    <div class="countdown-item"><span id="days">0</span><div>Días</div></div>
+    <div class="countdown-item"><span id="hours">00</span><div>Horas</div></div>
+    <div class="countdown-item"><span id="minutes">00</span><div>Min</div></div>
+    <div class="countdown-item"><span id="seconds">00</span><div>Seg</div></div>
   </div>
 
-  <!-- MÚSICA -->
+  <div class="letter">
+    <p id="message" class="typing"></p>
+  </div>
 
-  <audio id="music" src="musica.mp3"></audio>
+  <div class="gallery">
+    <img src="foto4.jpg" alt="Te amo">
+    <img src="img1.jpg" alt="Tamo">
+    <img src="img2.jpg" alt="Tamo">
+    <img src="img3.jpg" alt="Tamo">
+    <img src="img4.jpg" alt="Tamo">
+    <img src="img5.jpg" alt="Tamo">
+  </div>
+</div>
 
+<audio id="loveSong" src="musica.mp3" loop></audio>
 
-  <header>
-    <h1>Quiero que nunca olvides que te amo❤️</h1>
-  </header>
+<script>
+const audio=document.getElementById("loveSong");
 
-  <!-- SECCIÓN 1 -->
-  <section>
-    <div class="content">
-      <img src="foto1.jpg" alt="Foto de Rosa" loading="lazy" />
-      <p>
-        La manera en que nos conocimos si o si nos
-        aseguraba una sola cosa y era una relacion a
-        distancia sin nunca poder verte:(
-      </p>
-    </div>
-  </section>
+/* Corazones */
+function createHeart(){
+  const heart=document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML=["❤️","💗","💖","💕"][Math.floor(Math.random()*4)];
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.animationDuration=(Math.random()*5+8)+"s";
+  document.getElementById("heartsContainer").appendChild(heart);
+  setTimeout(()=>heart.remove(),12000);
+}
+setInterval(createHeart,500);
 
-  <!-- SECCIÓN 2 -->
-  <section>
-    <div class="content">
-      <p>
-        Que bonito fue cuando todo cambio y te conoci por primera vez
-        se que no fue lo que esperabas tal vez pero el hecho de 
-        poder haber cambiado eso a mas real fue genial
-      </p>
-      <img src="foto2.jpg" alt="Otro momento" loading="lazy" />
-    </div>
-  </section>
+/* Abrir carta + música suave */
+document.getElementById("openLetter").addEventListener("click",()=>{
+  const intro=document.getElementById("intro-screen");
+  intro.classList.add("hidden");
 
-  <!-- SECCIÓN 3 -->
-  <section>
-    <div class="content">
-      <p>
-        Tuvimos muchas discusiones, y estuvimos
-        a punto de separarnos, aun así llego
-        la segunda vez en que nos juntamos; ahora
-        me doy cuenta de cuanto me dolió
-        querer alejarnos por mi culpa.
-      </p>
-      <img src="foto3.jpg" alt="Recuerdo doloroso" loading="lazy" />
-    </div>
-  </section>
+  setTimeout(()=>{
+    intro.style.display="none";
+    document.getElementById("main-content").style.display="block";
+    startTyping();
 
-  <!-- SECCIÓN 4 -->
-  <section>
-    <div class="content">
-      <p>
-        Estoy muy seguro que nuestra historia debió ser
-        un plan del destino; después de todo lo que pasamos
-        por fin estamos mejor. Te quiero a mi lado para siempre.
-      </p>
-      <img src="foto4.jpg" alt="Momento feliz" loading="lazy" />
-    </div>
-  </section>
+    audio.volume=0;
+    audio.play().catch(()=>{});
+    let vol=0;
+    const fade=setInterval(()=>{
+      if(vol<0.5){
+        vol+=0.02;
+        audio.volume=vol;
+      }else clearInterval(fade);
+    },120);
 
-  <!-- GALERÍA -->
-  <section>
-    <div class="content">
-      <p>
-        Cada una de estas fotos me hacen sentir que tengo lo
-        mejor a tu lado.
-      </p>
-    </div>
-    <div class="gallery">
-      <img src="img1.jpg" alt="Galería imagen 1" loading="lazy">
-      <img src="img2.jpg" alt="Galería imagen 2" loading="lazy">
-      <img src="img3.jpg" alt="Galería imagen 3" loading="lazy">
-      <img src="img4.jpg" alt="Galería imagen 4" loading="lazy">
-    </div>
-  </section>
+  },800);
+});
 
-  <footer>
-    Hecho para hacerte recordar a diario que te amo
-  </footer>
+// Mensaje con efecto de escritura//
+function startTyping(){
+const text=`Se que las peleas entre nosotros a veces son bastante fuertes y lo siento por 
 
-  
-  <!-- SCRIPT -->
-  <script>
-    // APARECER CONTENIDO AL SCROLL
-    const contents = document.querySelectorAll('.content');
+  muchas cosas nunca ha sido mi intencion hacerte sentir mal ni mucho menos, Te amo con mi alma 
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-        }
-      });
-    }, { threshold: 0.3 });
+  y lo voy a seguir haciendo toda la vida, Nada de lo que discutamos hara que cambie todo lo que siento
 
-    contents.forEach(c => observer.observe(c));
+Ojala sigas siendo mi San Valentin durante muchos años mas mi amor, Tamo❤️
 
-    // ANIMAR GALERÍA: cuando la galería entra, mostrar imágenes una a una
-    const galleries = document.querySelectorAll('.gallery');
-    if (galleries.length) {
-      const galleryObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const imgs = Array.from(entry.target.querySelectorAll('img'));
-            imgs.forEach((img, i) => {
-              setTimeout(() => img.classList.add('show'), i * 250);
-            });
-            obs.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.2 });
+TE AMO CON TODA MI ALMA 💘`
 
-      galleries.forEach(g => galleryObserver.observe(g));
-    }
+  let i=0;
+  const el=document.getElementById("message");
+  function type(){
+    if(i<text.length){
+      el.innerHTML+=text.charAt(i);
+      i++;
+      setTimeout(type,50);
+    }else el.style.borderRight="none";
+  }
+  type();
+}
 
-    // CORAZONES AL HACER SCROLL (optimizado)
-    let ticking = false;
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.textContent = '❤️';
-      const left = Math.random() * 90 + 5; // 5vw..95vw
-      heart.style.left = left + 'vw';
-      heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 5000);
-      ticking = false;
-    }
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(createHeart);
-        ticking = true;
-      }
-    }, { passive: true });
-
-    // ABRIR CARTA + MÚSICA
-    const intro = document.getElementById('intro');
-    const btnOpen = document.getElementById('openLetter');
-    const music = document.getElementById('music');
-
-    btnOpen.addEventListener('click', () => {
-      music.volume = 0.4;
-      music.play().catch(() => {});
-      intro.style.opacity = '0';
-      setTimeout(() => intro.remove(), 800);
-    });
-
-    // En caso de que el navegador impida la reproducción, reintentar al siguiente click/touch
-    function tryPlayOnInteraction() {
-      if (music.paused) {
-        music.play().then(() => {
-          document.removeEventListener('click', tryPlayOnInteraction);
-          document.removeEventListener('touchstart', tryPlayOnInteraction);
-        }).catch(() => {});
-      } else {
-        document.removeEventListener('click', tryPlayOnInteraction);
-        document.removeEventListener('touchstart', tryPlayOnInteraction);
-      }
-    }
-    document.addEventListener('click', tryPlayOnInteraction);
-    document.addEventListener('touchstart', tryPlayOnInteraction);
-  </script>
+/* Contador */
+function getNextFeb14(){
+  const now=new Date();
+  let target=new Date(now.getFullYear(),1,14);
+  if(now>target)target.setFullYear(now.getFullYear()+1);
+  return target;
+}
+const countDownDate=getNextFeb14().getTime();
+setInterval(()=>{
+  const now=new Date().getTime();
+  const distance=countDownDate-now;
+  const d=Math.floor(distance/(1000*60*60*24));
+  const h=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+  const m=Math.floor((distance%(1000*60*60))/(1000*60));
+  const s=Math.floor((distance%(1000*60))/1000);
+  document.getElementById("days").innerText=d;
+  document.getElementById("hours").innerText=h.toString().padStart(2,'0');
+  document.getElementById("minutes").innerText=m.toString().padStart(2,'0');
+  document.getElementById("seconds").innerText=s.toString().padStart(2,'0');
+},1000);
+</script>
 
 </body>
 </html>
