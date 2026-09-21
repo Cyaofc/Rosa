@@ -2,610 +2,145 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>root@toolbox:~$</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Para Rosa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0a0906;
-    --bg-panel:#131009;
-    --bg-panel-2:#1b1610;
-    --amber:#ffb000;
-    --amber-dim:#a6740a;
-    --amber-bright:#ffd166;
-    --red:#ff4d4d;
-    --text:#e8d9b0;
-    --text-dim:#8a7a52;
-    --border:#3a2f18;
-    --mono: "JetBrains Mono", "Fira Code", ui-monospace, Menlo, Consolas, monospace;
+    box-sizing:border-box;
+    --ink:#2b2430;
+    --paper:#f4ece4;
+    --dusk-top:#3d3450;
+    --dusk-bottom:#c98a7a;
+    --rose:#b96a63;
+    --gold:#c9a56a;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
   }
-  *{box-sizing:border-box;}
-  ::selection{background:var(--amber);color:#000;}
-  html,body{
-    margin:0;padding:0;background:var(--bg);color:var(--text);
-    font-family:var(--mono);
-    min-height:100%;
-  }
+  *{box-sizing:inherit;margin:0;padding:0}
+  html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  html,body{height:100%}
   body{
-    background-image:
-      radial-gradient(ellipse at top, rgba(255,176,0,0.06), transparent 60%),
-      repeating-linear-gradient(0deg, rgba(255,176,0,0.025) 0px, rgba(255,176,0,0.025) 1px, transparent 1px, transparent 3px);
-    background-attachment:fixed;
+    font-family:'Jost',sans-serif;
+    background:linear-gradient(180deg,var(--dusk-top) 0%,#6b4f5e 45%,var(--dusk-bottom) 100%);
+    color:var(--paper);
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow-x:hidden;
   }
-  #crt-flicker{
-    position:fixed;inset:0;pointer-events:none;z-index:9999;
-    background:rgba(255,176,0,0.015);
-    animation:flicker 6s infinite;
-    mix-blend-mode:overlay;
+  .sky{
+    position:relative;
+    width:100%;
+    padding:14vh 1.5rem 8vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
   }
-  @keyframes flicker{
-    0%,96%,100%{opacity:0;}
-    97%{opacity:1;}
-    98%{opacity:0;}
+  .sun{
+    width:120px;height:120px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ffe3b0, var(--gold) 60%, transparent 75%);
+    opacity:0;
+    animation:rise 2.2s ease-out forwards;
+    margin-bottom:2.2rem;
+    filter:blur(0.3px);
   }
-
-  /* ---------- boot sequence ---------- */
-  #boot{
-    position:fixed;inset:0;background:#000;color:var(--amber);
-    font-size:14px;line-height:1.5;padding:24px;z-index:10000;
-    white-space:pre-wrap;overflow:hidden;
+  @keyframes rise{
+    from{opacity:0; transform:translateY(24px) scale(0.9)}
+    to{opacity:0.9; transform:translateY(0) scale(1)}
   }
-  #boot .cursor{display:inline-block;width:8px;background:var(--amber);animation:blink 1s steps(1) infinite;}
-  @keyframes blink{50%{opacity:0;}}
-
-  /* ---------- shell bar ---------- */
-  header{
-    position:sticky;top:0;z-index:100;
-    background:linear-gradient(var(--bg-panel), var(--bg-panel) 90%, transparent);
-    border-bottom:1px solid var(--border);
-    padding:14px 20px;
-    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
-    backdrop-filter:blur(4px);
+  h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    font-size:clamp(2.4rem,7vw,4rem);
+    letter-spacing:0.01em;
+    opacity:0;
+    animation:fadeUp 1.4s ease-out 0.6s forwards;
   }
-  header .logo{
-    color:var(--amber-bright);font-weight:700;letter-spacing:1px;
-    font-size:15px;white-space:nowrap;
+  .subtitle{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:1.15rem;
+    color:#e9d6c9;
+    margin-top:0.8rem;
+    opacity:0;
+    animation:fadeUp 1.4s ease-out 1s forwards;
   }
-  header .logo::before{content:"root@toolbox:~$ ";color:var(--text-dim);}
-  #cmdline{
-    flex:1;min-width:180px;
-    background:var(--bg);border:1px solid var(--border);
-    color:var(--amber);font-family:var(--mono);font-size:13px;
-    padding:8px 10px;outline:none;border-radius:2px;
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(12px)}
+    to{opacity:1; transform:translateY(0)}
   }
-  #cmdline::placeholder{color:var(--text-dim);}
-  #cmdline:focus{border-color:var(--amber-dim);}
-  #cmd-hint{font-size:11px;color:var(--text-dim);white-space:nowrap;}
-
-  main{max-width:980px;margin:0 auto;padding:28px 18px 80px;}
-
-  .hero{padding:30px 4px 40px;}
-  .hero .prompt{color:var(--text-dim);font-size:13px;}
-  .hero h1{
-    font-size:clamp(22px,4vw,34px);margin:6px 0 10px;color:var(--amber-bright);
-    letter-spacing:0.5px;
+  main{
+    width:100%;
+    max-width:620px;
+    padding:0 1.6rem 10vh;
   }
-  .hero p{color:var(--text-dim);font-size:14px;max-width:60ch;line-height:1.6;}
-  .hero .list{margin-top:18px;font-size:13px;color:var(--text-dim);}
-  .hero .list span{color:var(--amber);cursor:pointer;}
-  .hero .list span:hover{text-decoration:underline;}
-
-  section.tool{
-    border:1px solid var(--border);
-    background:var(--bg-panel);
-    border-radius:3px;
-    margin-bottom:22px;
-    scroll-margin-top:80px;
+  .letter{
+    background:rgba(244,236,228,0.06);
+    border:1px solid rgba(244,236,228,0.14);
+    border-radius:4px;
+    padding:clamp(1.8rem,5vw,3.2rem);
+    backdrop-filter:blur(2px);
   }
-  section.tool .titlebar{
-    display:flex;align-items:center;gap:10px;
-    padding:10px 14px;border-bottom:1px solid var(--border);
-    background:var(--bg-panel-2);
-    font-size:12px;color:var(--text-dim);
+  .letter p{
+    font-size:1.06rem;
+    line-height:1.85;
+    color:#f1e6dc;
+    margin-bottom:1.4rem;
+    max-width:62ch;
   }
-  section.tool .titlebar .idx{color:var(--amber-dim);}
-  section.tool .titlebar .name{color:var(--amber-bright);font-weight:700;letter-spacing:0.5px;}
-  section.tool .body{padding:18px 16px;}
-  section.tool .desc{color:var(--text-dim);font-size:12.5px;margin:0 0 14px;line-height:1.5;}
-
-  label{display:block;font-size:11px;color:var(--text-dim);margin:10px 0 4px;text-transform:uppercase;letter-spacing:0.5px;}
-  input[type=text], input[type=number], input[type=password], textarea, select{
-    width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);
-    font-family:var(--mono);font-size:13px;padding:9px 10px;border-radius:2px;outline:none;
+  .letter p:last-of-type{margin-bottom:0}
+  .signature{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.3rem;
+    color:var(--gold);
+    margin-top:2.2rem;
+    text-align:right;
   }
-  input:focus, textarea:focus, select:focus{border-color:var(--amber-dim);}
-  textarea{resize:vertical;min-height:70px;}
-  .row{display:flex;flex-wrap:wrap;gap:12px;}
-  .row > div{flex:1;min-width:140px;}
-
-  button{
-    font-family:var(--mono);background:transparent;color:var(--amber);
-    border:1px solid var(--amber-dim);padding:8px 14px;border-radius:2px;
-    cursor:pointer;font-size:12.5px;letter-spacing:0.5px;margin-top:12px;
-    transition:background .15s, color .15s;
+  .divider{
+    width:44px;height:1px;
+    background:rgba(244,236,228,0.35);
+    margin:2.6rem auto;
   }
-  button:hover{background:var(--amber);color:#000;}
-  button.secondary{border-color:var(--border);color:var(--text-dim);}
-  button.secondary:hover{background:var(--border);color:var(--text);}
-
-  .output{
-    margin-top:12px;background:#000;border:1px solid var(--border);border-radius:2px;
-    padding:10px 12px;font-size:12.5px;color:var(--amber);white-space:pre-wrap;word-break:break-all;
-    min-height:20px;
-  }
-  .output:empty::before{content:"—";color:var(--text-dim);}
-  .meter{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:10px;}
-  .meter > div{height:100%;width:0%;background:var(--red);transition:width .2s, background .2s;}
-  .meter-label{font-size:11px;color:var(--text-dim);margin-top:6px;}
-  .checks{list-style:none;padding:0;margin:8px 0 0;font-size:11.5px;color:var(--text-dim);}
-  .checks li::before{content:"[ ] ";color:var(--text-dim);}
-  .checks li.ok{color:var(--amber);}
-  .checks li.ok::before{content:"[x] ";color:var(--amber);}
-
-  #qr-canvas{margin-top:12px;background:#fff;display:inline-block;padding:8px;border-radius:2px;}
-
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  @media (max-width:560px){.grid2{grid-template-columns:1fr;}}
-
   footer{
-    border-top:1px solid var(--border);padding:20px;text-align:center;
-    color:var(--text-dim);font-size:11px;
+    padding-bottom:6vh;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:0.95rem;
+    color:#d9c2b8;
+    text-align:center;
   }
-  footer .glow{color:var(--amber-dim);}
-
-  code.inline{background:#000;padding:1px 5px;border-radius:2px;color:var(--amber-bright);font-size:12px;}
+  @media (prefers-reduced-motion: reduce){
+    .sun,h1,.subtitle{animation:none; opacity:1}
+  }
 </style>
 </head>
 <body>
 
-<div id="boot">
-  <span id="boot-text"></span><span class="cursor">&nbsp;</span>
+<div class="sky">
+  <div class="sun"></div>
+  <h1>Para Rosa</h1>
+  <p class="subtitle">algunas cosas no terminan, solo cambian de forma</p>
 </div>
-<div id="crt-flicker"></div>
-
-<header>
-  <div class="logo">toolbox</div>
-  <input id="cmdline" type="text" placeholder="escribe un comando (prueba: help)" autocomplete="off">
-  <div id="cmd-hint">ENTER para ejecutar</div>
-</header>
 
 <main>
-  <div class="hero">
-    <div class="prompt">$ cat bienvenida.txt</div>
-    <h1>Terminal de utilidades</h1>
-    <p>Una caja de herramientas del lado del cliente: nada se envía a ningún servidor salvo donde se indique explícitamente (IP pública, QR). Todo el procesamiento corre en tu navegador.</p>
-    <div class="list">
-      $ ls herramientas/ →
-      <span onclick="jump('t-pass')">passgen</span>,
-      <span onclick="jump('t-strength')">strength</span>,
-      <span onclick="jump('t-hash')">hash</span>,
-      <span onclick="jump('t-b64')">base64</span>,
-      <span onclick="jump('t-url')">urlcodec</span>,
-      <span onclick="jump('t-conv')">textconv</span>,
-      <span onclick="jump('t-jwt')">jwtdecode</span>,
-      <span onclick="jump('t-uuid')">uuidgen</span>,
-      <span onclick="jump('t-qr')">qrgen</span>,
-      <span onclick="jump('t-ip')">whoami</span>
-    </div>
+  <div class="letter">
+    <p>Rosa, hay caminos que se recorren juntos un tiempo y después cada quien sigue el suyo. No porque algo se haya roto de golpe, sino porque a veces querer a alguien también significa dejarlo ir.</p>
+    <p>Gracias por cada día que construimos, por lo que aprendí a tu lado, por la paciencia, por las risas que no se van a olvidar tan fácil. Fuiste, y sigues siendo, alguien que dejó huella en mi vida.</p>
+    <p>Me quedo con lo bueno. Con lo que sí funcionó, con lo que sí valió la pena, con la certeza de que te quise de verdad. Y aunque hoy nos toque despedirnos, te deseo que todo lo que venga después sea bueno para ti.</p>
+    <p>No es un adiós con rencor. Es un gracias, y un hasta siempre.</p>
+    <div class="divider"></div>
+    <p class="signature">Con cariño, siempre.</p>
   </div>
-
-  <!-- 01 PASSWORD GENERATOR -->
-  <section class="tool" id="t-pass">
-    <div class="titlebar"><span class="idx">01</span><span class="name">passgen</span> — generador de contraseñas</div>
-    <div class="body">
-      <p class="desc">Genera contraseñas aleatorias usando <code class="inline">crypto.getRandomValues</code> (criptográficamente seguro, no Math.random).</p>
-      <label>Longitud: <span id="pass-len-val">16</span></label>
-      <input type="range" id="pass-len" min="6" max="64" value="16" oninput="document.getElementById('pass-len-val').textContent=this.value">
-      <div class="row" style="margin-top:10px;">
-        <div><label><input type="checkbox" id="pass-upper" checked> Mayúsculas (A-Z)</label></div>
-        <div><label><input type="checkbox" id="pass-lower" checked> Minúsculas (a-z)</label></div>
-        <div><label><input type="checkbox" id="pass-num" checked> Números (0-9)</label></div>
-        <div><label><input type="checkbox" id="pass-sym" checked> Símbolos (!@#$...)</label></div>
-      </div>
-      <button onclick="genPassword()">generar</button>
-      <button class="secondary" onclick="copyOut('pass-out')">copiar</button>
-      <div class="output" id="pass-out"></div>
-    </div>
-  </section>
-
-  <!-- 02 STRENGTH CHECKER -->
-  <section class="tool" id="t-strength">
-    <div class="titlebar"><span class="idx">02</span><span class="name">strength</span> — comprobador de fuerza</div>
-    <div class="body">
-      <p class="desc">Estima entropía y tiempo aproximado de fuerza bruta. Se calcula localmente; nada se transmite.</p>
-      <label>Contraseña a evaluar</label>
-      <input type="text" id="strength-input" placeholder="escribe aquí..." oninput="checkStrength()">
-      <div class="meter"><div id="strength-bar"></div></div>
-      <div class="meter-label" id="strength-label">—</div>
-      <ul class="checks" id="strength-checks">
-        <li id="chk-len">Al menos 12 caracteres</li>
-        <li id="chk-upper">Contiene mayúsculas</li>
-        <li id="chk-lower">Contiene minúsculas</li>
-        <li id="chk-num">Contiene números</li>
-        <li id="chk-sym">Contiene símbolos</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 03 HASH GENERATOR -->
-  <section class="tool" id="t-hash">
-    <div class="titlebar"><span class="idx">03</span><span class="name">hash</span> — generador de hashes</div>
-    <div class="body">
-      <p class="desc">Calcula SHA-1 / SHA-256 / SHA-384 / SHA-512 con la Web Crypto API nativa del navegador.</p>
-      <label>Texto de entrada</label>
-      <textarea id="hash-input" placeholder="texto a hashear..."></textarea>
-      <label>Algoritmo</label>
-      <select id="hash-algo">
-        <option value="SHA-1">SHA-1</option>
-        <option value="SHA-256" selected>SHA-256</option>
-        <option value="SHA-384">SHA-384</option>
-        <option value="SHA-512">SHA-512</option>
-      </select>
-      <button onclick="doHash()">calcular</button>
-      <button class="secondary" onclick="copyOut('hash-out')">copiar</button>
-      <div class="output" id="hash-out"></div>
-    </div>
-  </section>
-
-  <!-- 04 BASE64 -->
-  <section class="tool" id="t-b64">
-    <div class="titlebar"><span class="idx">04</span><span class="name">base64</span> — codificar / decodificar</div>
-    <div class="body">
-      <p class="desc">Codifica o decodifica texto en Base64 (soporta UTF-8).</p>
-      <label>Entrada</label>
-      <textarea id="b64-input" placeholder="texto o base64..."></textarea>
-      <div class="row">
-        <div><button onclick="b64Encode()">codificar →</button></div>
-        <div><button onclick="b64Decode()">← decodificar</button></div>
-      </div>
-      <div class="output" id="b64-out"></div>
-    </div>
-  </section>
-
-  <!-- 05 URL CODEC -->
-  <section class="tool" id="t-url">
-    <div class="titlebar"><span class="idx">05</span><span class="name">urlcodec</span> — codificar / decodificar URL</div>
-    <div class="body">
-      <p class="desc">Aplica <code class="inline">encodeURIComponent</code> / <code class="inline">decodeURIComponent</code>.</p>
-      <label>Entrada</label>
-      <textarea id="url-input" placeholder="https://ejemplo.com/?q=hola mundo"></textarea>
-      <div class="row">
-        <div><button onclick="urlEncode()">codificar →</button></div>
-        <div><button onclick="urlDecode()">← decodificar</button></div>
-      </div>
-      <div class="output" id="url-out"></div>
-    </div>
-  </section>
-
-  <!-- 06 TEXT CONVERTER -->
-  <section class="tool" id="t-conv">
-    <div class="titlebar"><span class="idx">06</span><span class="name">textconv</span> — texto ⇄ binario ⇄ hex</div>
-    <div class="body">
-      <p class="desc">Convierte texto plano a binario o hexadecimal, y viceversa.</p>
-      <label>Entrada</label>
-      <textarea id="conv-input" placeholder="texto, binario (espaciado) o hex..."></textarea>
-      <div class="grid2" style="margin-top:10px;">
-        <button onclick="textToBin()">texto → binario</button>
-        <button onclick="binToText()">binario → texto</button>
-        <button onclick="textToHex()">texto → hex</button>
-        <button onclick="hexToText()">hex → texto</button>
-      </div>
-      <div class="output" id="conv-out"></div>
-    </div>
-  </section>
-
-  <!-- 07 JWT DECODER -->
-  <section class="tool" id="t-jwt">
-    <div class="titlebar"><span class="idx">07</span><span class="name">jwtdecode</span> — inspector de JWT</div>
-    <div class="body">
-      <p class="desc">Decodifica header y payload de un JWT (Base64URL). No verifica la firma ni valida su autenticidad.</p>
-      <label>Token</label>
-      <textarea id="jwt-input" placeholder="eyJhbGciOi..."></textarea>
-      <button onclick="decodeJWT()">decodificar</button>
-      <div class="output" id="jwt-out"></div>
-    </div>
-  </section>
-
-  <!-- 08 UUID -->
-  <section class="tool" id="t-uuid">
-    <div class="titlebar"><span class="idx">08</span><span class="name">uuidgen</span> — generador de UUID v4</div>
-    <div class="body">
-      <p class="desc">Genera identificadores únicos universales versión 4 usando <code class="inline">crypto.randomUUID</code>.</p>
-      <div class="row">
-        <div><label>Cantidad</label><input type="number" id="uuid-count" value="1" min="1" max="20"></div>
-      </div>
-      <button onclick="genUUID()">generar</button>
-      <button class="secondary" onclick="copyOut('uuid-out')">copiar</button>
-      <div class="output" id="uuid-out"></div>
-    </div>
-  </section>
-
-  <!-- 09 QR -->
-  <section class="tool" id="t-qr">
-    <div class="titlebar"><span class="idx">09</span><span class="name">qrgen</span> — generador de código QR</div>
-    <div class="body">
-      <p class="desc">Genera un código QR a partir de texto o URL (renderizado localmente en el navegador).</p>
-      <label>Contenido</label>
-      <input type="text" id="qr-input" placeholder="https://ejemplo.com">
-      <button onclick="genQR()">generar QR</button>
-      <div><div id="qr-canvas"></div></div>
-    </div>
-  </section>
-
-  <!-- 10 WHOAMI / IP -->
-  <section class="tool" id="t-ip">
-    <div class="titlebar"><span class="idx">10</span><span class="name">whoami</span> — info de red y navegador</div>
-    <div class="body">
-      <p class="desc">Consulta tu IP pública (vía api.ipify.org) e info básica de tu navegador. Esta es la única herramienta que hace una petición externa.</p>
-      <button onclick="whoami()">consultar</button>
-      <div class="output" id="ip-out"></div>
-    </div>
-  </section>
-
-  <footer>
-    <span class="glow">[ fin de la transmisión ]</span><br>
-    procesamiento 100% local · sin telemetría · sin cookies
-  </footer>
 </main>
 
-<script>
-/* ---------------- boot sequence ---------------- */
-const bootLines = [
-"Iniciando kernel...",
-"Montando /dev/toolbox...  [ OK ]",
-"Cargando módulos criptográficos...  [ OK ]",
-"Verificando Web Crypto API...  [ OK ]",
-"Estableciendo shell interactiva...",
-"",
-"bienvenido a toolbox v1.0",
-""
-];
-const bootEl = document.getElementById('boot-text');
-let li = 0, ci = 0;
-function typeBoot(){
-  if(li >= bootLines.length){
-    setTimeout(()=>{
-      document.getElementById('boot').style.transition = 'opacity .4s';
-      document.getElementById('boot').style.opacity = '0';
-      setTimeout(()=>document.getElementById('boot').remove(), 400);
-    }, 250);
-    return;
-  }
-  const line = bootLines[li];
-  if(ci < line.length){
-    bootEl.textContent += line[ci];
-    ci++;
-    setTimeout(typeBoot, 8 + Math.random()*12);
-  } else {
-    bootEl.textContent += "\n";
-    li++; ci = 0;
-    setTimeout(typeBoot, 60);
-  }
-}
-typeBoot();
-
-/* ---------------- command bar ---------------- */
-const cmdMap = {
-  passgen:'t-pass', strength:'t-strength', hash:'t-hash', base64:'t-b64',
-  urlcodec:'t-url', textconv:'t-conv', jwtdecode:'t-jwt', uuidgen:'t-uuid',
-  qrgen:'t-qr', whoami:'t-ip'
-};
-function jump(id){
-  document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
-}
-document.getElementById('cmdline').addEventListener('keydown', e=>{
-  if(e.key !== 'Enter') return;
-  const raw = e.target.value.trim().toLowerCase();
-  e.target.value = '';
-  if(raw === 'help' || raw === 'ls'){
-    alert('Comandos: ' + Object.keys(cmdMap).join(', '));
-    return;
-  }
-  if(raw === 'clear' || raw === 'cls'){
-    document.querySelectorAll('.output').forEach(o=>o.textContent='');
-    return;
-  }
-  if(cmdMap[raw]) jump(cmdMap[raw]);
-});
-
-/* ---------------- helpers ---------------- */
-function copyOut(id){
-  const el = document.getElementById(id);
-  const text = el.textContent;
-  if(!text) return;
-  navigator.clipboard.writeText(text);
-  const old = el.style.color;
-  el.style.color = 'var(--amber-bright)';
-  setTimeout(()=>el.style.color = old, 200);
-}
-
-/* ---------------- 01 password generator ---------------- */
-function genPassword(){
-  const len = parseInt(document.getElementById('pass-len').value, 10);
-  const sets = [];
-  if(document.getElementById('pass-upper').checked) sets.push('ABCDEFGHJKLMNPQRSTUVWXYZ');
-  if(document.getElementById('pass-lower').checked) sets.push('abcdefghijkmnpqrstuvwxyz');
-  if(document.getElementById('pass-num').checked) sets.push('23456789');
-  if(document.getElementById('pass-sym').checked) sets.push('!@#$%^&*()-_=+[]{}?');
-  if(sets.length === 0){ document.getElementById('pass-out').textContent = 'selecciona al menos un conjunto de caracteres'; return; }
-  const all = sets.join('');
-  const arr = new Uint32Array(len);
-  crypto.getRandomValues(arr);
-  let out = '';
-  for(let i=0;i<len;i++){
-    out += all[arr[i] % all.length];
-  }
-  document.getElementById('pass-out').textContent = out;
-}
-
-/* ---------------- 02 strength checker ---------------- */
-function checkStrength(){
-  const val = document.getElementById('strength-input').value;
-  const checks = {
-    len: val.length >= 12,
-    upper: /[A-Z]/.test(val),
-    lower: /[a-z]/.test(val),
-    num: /[0-9]/.test(val),
-    sym: /[^A-Za-z0-9]/.test(val)
-  };
-  document.getElementById('chk-len').className = checks.len ? 'ok' : '';
-  document.getElementById('chk-upper').className = checks.upper ? 'ok' : '';
-  document.getElementById('chk-lower').className = checks.lower ? 'ok' : '';
-  document.getElementById('chk-num').className = checks.num ? 'ok' : '';
-  document.getElementById('chk-sym').className = checks.sym ? 'ok' : '';
-
-  let pool = 0;
-  if(checks.upper) pool += 26;
-  if(checks.lower) pool += 26;
-  if(checks.num) pool += 10;
-  if(checks.sym) pool += 32;
-  const entropy = val.length > 0 ? Math.log2(Math.max(pool,1)) * val.length : 0;
-  const pct = Math.min(100, Math.round((entropy / 100) * 100));
-  const bar = document.getElementById('strength-bar');
-  bar.style.width = pct + '%';
-  let label, color;
-  if(val.length === 0){ label = '—'; color = 'var(--border)'; }
-  else if(entropy < 28){ label = 'muy débil'; color = 'var(--red)'; }
-  else if(entropy < 45){ label = 'débil'; color = '#ff8c42'; }
-  else if(entropy < 60){ label = 'razonable'; color = 'var(--amber-dim)'; }
-  else if(entropy < 80){ label = 'fuerte'; color = 'var(--amber)'; }
-  else { label = 'muy fuerte'; color = 'var(--amber-bright)'; }
-  bar.style.background = color;
-  document.getElementById('strength-label').textContent = `${label} · ~${entropy.toFixed(1)} bits de entropía`;
-}
-
-/* ---------------- 03 hash ---------------- */
-async function doHash(){
-  const text = document.getElementById('hash-input').value;
-  const algo = document.getElementById('hash-algo').value;
-  const enc = new TextEncoder().encode(text);
-  const digest = await crypto.subtle.digest(algo, enc);
-  const hex = Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
-  document.getElementById('hash-out').textContent = hex;
-}
-
-/* ---------------- 04 base64 ---------------- */
-function b64Encode(){
-  const input = document.getElementById('b64-input').value;
-  try{
-    const out = btoa(unescape(encodeURIComponent(input)));
-    document.getElementById('b64-out').textContent = out;
-  }catch(e){ document.getElementById('b64-out').textContent = 'error: ' + e.message; }
-}
-function b64Decode(){
-  const input = document.getElementById('b64-input').value;
-  try{
-    const out = decodeURIComponent(escape(atob(input)));
-    document.getElementById('b64-out').textContent = out;
-  }catch(e){ document.getElementById('b64-out').textContent = 'error: entrada no es base64 válido'; }
-}
-
-/* ---------------- 05 url codec ---------------- */
-function urlEncode(){
-  document.getElementById('url-out').textContent = encodeURIComponent(document.getElementById('url-input').value);
-}
-function urlDecode(){
-  try{
-    document.getElementById('url-out').textContent = decodeURIComponent(document.getElementById('url-input').value);
-  }catch(e){ document.getElementById('url-out').textContent = 'error: secuencia inválida'; }
-}
-
-/* ---------------- 06 text converter ---------------- */
-function textToBin(){
-  const input = document.getElementById('conv-input').value;
-  const bytes = new TextEncoder().encode(input);
-  document.getElementById('conv-out').textContent = Array.from(bytes).map(b=>b.toString(2).padStart(8,'0')).join(' ');
-}
-function binToText(){
-  const input = document.getElementById('conv-input').value.trim();
-  try{
-    const bytes = input.split(/\s+/).map(b=>parseInt(b,2));
-    document.getElementById('conv-out').textContent = new TextDecoder().decode(new Uint8Array(bytes));
-  }catch(e){ document.getElementById('conv-out').textContent = 'error: binario inválido'; }
-}
-function textToHex(){
-  const input = document.getElementById('conv-input').value;
-  const bytes = new TextEncoder().encode(input);
-  document.getElementById('conv-out').textContent = Array.from(bytes).map(b=>b.toString(16).padStart(2,'0')).join(' ');
-}
-function hexToText(){
-  const input = document.getElementById('conv-input').value.trim().replace(/\s+/g,'');
-  try{
-    const bytes = input.match(/.{1,2}/g).map(h=>parseInt(h,16));
-    document.getElementById('conv-out').textContent = new TextDecoder().decode(new Uint8Array(bytes));
-  }catch(e){ document.getElementById('conv-out').textContent = 'error: hex inválido'; }
-}
-
-/* ---------------- 07 jwt decoder ---------------- */
-function b64urlDecode(str){
-  str = str.replace(/-/g,'+').replace(/_/g,'/');
-  while(str.length % 4) str += '=';
-  return decodeURIComponent(escape(atob(str)));
-}
-function decodeJWT(){
-  const token = document.getElementById('jwt-input').value.trim();
-  const parts = token.split('.');
-  if(parts.length < 2){
-    document.getElementById('jwt-out').textContent = 'error: formato de token inválido';
-    return;
-  }
-  try{
-    const header = JSON.parse(b64urlDecode(parts[0]));
-    const payload = JSON.parse(b64urlDecode(parts[1]));
-    document.getElementById('jwt-out').textContent =
-      '// header\n' + JSON.stringify(header, null, 2) +
-      '\n\n// payload\n' + JSON.stringify(payload, null, 2) +
-      '\n\n// nota: la firma no fue verificada';
-  }catch(e){
-    document.getElementById('jwt-out').textContent = 'error: no se pudo decodificar (' + e.message + ')';
-  }
-}
-
-/* ---------------- 08 uuid ---------------- */
-function genUUID(){
-  const count = Math.max(1, Math.min(20, parseInt(document.getElementById('uuid-count').value,10) || 1));
-  const out = [];
-  for(let i=0;i<count;i++) out.push(crypto.randomUUID());
-  document.getElementById('uuid-out').textContent = out.join('\n');
-}
-
-/* ---------------- 09 qr ---------------- */
-let qrInstance = null;
-function genQR(){
-  const val = document.getElementById('qr-input').value.trim();
-  const container = document.getElementById('qr-canvas');
-  container.innerHTML = '';
-  if(!val) return;
-  qrInstance = new QRCode(container, {
-    text: val,
-    width: 180,
-    height: 180,
-    colorDark: "#0a0906",
-    colorLight: "#ffffff"
-  });
-}
-
-/* ---------------- 10 whoami ---------------- */
-async function whoami(){
-  const out = document.getElementById('ip-out');
-  out.textContent = 'consultando...';
-  let ip = 'no disponible';
-  try{
-    const res = await fetch('https://api.ipify.org?format=json');
-    const data = await res.json();
-    ip = data.ip;
-  }catch(e){ ip = 'no se pudo obtener (sin conexión o bloqueado)'; }
-  const info = [
-    `IP pública: ${ip}`,
-    `User agent: ${navigator.userAgent}`,
-    `Idioma: ${navigator.language}`,
-    `Plataforma: ${navigator.platform || 'desconocida'}`,
-    `Resolución: ${screen.width}x${screen.height}`,
-    `Zona horaria: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`
-  ];
-  out.textContent = info.join('\n');
-}
-</script>
+<footer>hecho con lo que quedó del corazón</footer>
 
 </body>
 </html>
