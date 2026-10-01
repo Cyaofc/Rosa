@@ -6,25 +6,29 @@
 <title>Para el amor de mi vida</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     box-sizing:border-box;
     --ink:#2b2430;
     --paper:#f4ece4;
-    --dusk-top:#3d3450;
-    --dusk-bottom:#c98a7a;
-    --rose:#b96a63;
-    --gold:#c9a56a;
+    --dusk-top:#2e2742;
+    --dusk-mid:#6b4f5e;
+    --dusk-bottom:#d59a86;
+    --rose:#c9746c;
+    --gold:#d4af6e;
+    --card:rgba(244,236,228,0.07);
+    --line:rgba(244,236,228,0.16);
     padding-top:env(safe-area-inset-top,0px);
     padding-bottom:env(safe-area-inset-bottom,0px);
   }
   *{box-sizing:inherit;margin:0;padding:0}
-  html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  html{scroll-behavior:smooth}
   html,body{height:100%}
   body{
     font-family:'Jost',sans-serif;
-    background:linear-gradient(180deg,var(--dusk-top) 0%,#6b4f5e 45%,var(--dusk-bottom) 100%);
+    background:linear-gradient(180deg,var(--dusk-top) 0%,var(--dusk-mid) 48%,var(--dusk-bottom) 100%);
+    background-attachment:fixed;
     color:var(--paper);
     min-height:100%;
     display:flex;
@@ -32,112 +36,232 @@
     align-items:center;
     overflow-x:hidden;
   }
-  .sky{
-    position:relative;
-    width:100%;
-    padding:14vh 1.5rem 8vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
+  #stars{position:fixed;inset:0;pointer-events:none;opacity:.8}
+  .petal{position:fixed;top:-4vh;pointer-events:none;animation:fall linear forwards;opacity:.9}
+  @keyframes fall{
+    to{transform:translateY(112vh) rotate(320deg)}
   }
-  .sun{
-    width:120px;height:120px;border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, #ffe3b0, var(--gold) 60%, transparent 75%);
-    opacity:0;
-    animation:rise 2.2s ease-out forwards;
-    margin-bottom:2.2rem;
-    filter:blur(0.3px);
+  .sky{position:relative;width:100%;padding:13vh 1.5rem 6vh;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .moon{
+    width:118px;height:118px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #ffedc4, var(--gold) 58%, rgba(212,175,110,0) 74%);
+    opacity:0;animation:rise 2.2s ease-out forwards;margin-bottom:1.6rem;
+    box-shadow:0 0 60px rgba(212,175,110,.45);
   }
-  @keyframes rise{
-    from{opacity:0; transform:translateY(24px) scale(0.9)}
-    to{opacity:0.9; transform:translateY(0) scale(1)}
+  @keyframes rise{from{opacity:0;transform:translateY(24px) scale(.92)}to{opacity:.95;transform:translateY(0) scale(1)}}
+  .eyebrow{letter-spacing:.35em;font-size:.72rem;color:#e6cfc0;text-transform:uppercase;opacity:0;animation:fadeUp 1.2s ease-out .3s forwards}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(2.5rem,7.5vw,4.2rem);line-height:1.05;opacity:0;animation:fadeUp 1.4s ease-out .55s forwards}
+  h1 .amp{font-style:italic;font-weight:400;color:var(--gold)}
+  .subtitle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:#f0dcd1;margin-top:.9rem;max-width:34ch;opacity:0;animation:fadeUp 1.4s ease-out .95s forwards}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .music-pill{
+    margin-top:1.6rem;display:flex;gap:.6rem;align-items:center;
+    background:rgba(20,14,24,.45);border:1px solid var(--line);border-radius:999px;
+    padding:.55rem .6rem .55rem 1rem;backdrop-filter:blur(6px);
+    opacity:0;animation:fadeUp 1.2s ease-out 1.2s forwards;
   }
-  h1{
-    font-family:'Cormorant Garamond',serif;
-    font-weight:500;
-    font-size:clamp(2.4rem,7vw,4rem);
-    letter-spacing:0.01em;
-    opacity:0;
-    animation:fadeUp 1.4s ease-out 0.6s forwards;
+  .music-pill small{color:#e9d3c6;font-size:.82rem;letter-spacing:.04em}
+  .btn{
+    font-family:'Jost',sans-serif;cursor:pointer;border:1px solid var(--line);
+    background:rgba(244,236,228,.1);color:var(--paper);
+    border-radius:999px;padding:.6rem 1.15rem;font-size:.9rem;letter-spacing:.06em;
+    transition:transform .2s ease, background .2s ease;
   }
-  .subtitle{
-    font-family:'Cormorant Garamond',serif;
-    font-style:italic;
-    font-weight:400;
-    font-size:1.15rem;
-    color:#e9d6c9;
-    margin-top:0.8rem;
-    opacity:0;
-    animation:fadeUp 1.4s ease-out 1s forwards;
-  }
-  @keyframes fadeUp{
-    from{opacity:0; transform:translateY(12px)}
-    to{opacity:1; transform:translateY(0)}
-  }
-  main{
-    width:100%;
-    max-width:620px;
-    padding:0 1.6rem 10vh;
-  }
+  .btn:hover{transform:translateY(-1px);background:rgba(244,236,228,.18)}
+  .btn.gold{background:linear-gradient(135deg,#d9b26a,#b9824f);border:none;color:#2a1f16;font-weight:500}
+  main{width:100%;max-width:640px;padding:0 1.4rem 8vh}
   .letter{
-    background:rgba(244,236,228,0.06);
-    border:1px solid rgba(244,236,228,0.14);
-    border-radius:4px;
-    padding:clamp(1.8rem,5vw,3.2rem);
-    backdrop-filter:blur(2px);
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:clamp(1.9rem,5vw,3rem);
+    box-shadow:0 24px 60px rgba(20,10,20,.35);
+    backdrop-filter:blur(4px);position:relative;overflow:hidden;
   }
-  .letter p{
-    font-size:1.06rem;
-    line-height:1.85;
-    color:#f1e6dc;
-    margin-bottom:1.4rem;
-    max-width:62ch;
+  .letter::before{
+    content:"";position:absolute;inset:0 0 auto 0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
   }
-  .letter p:last-of-type{margin-bottom:0}
-  .signature{
-    font-family:'Cormorant Garamond',serif;
-    font-style:italic;
-    font-size:1.3rem;
-    color:var(--gold);
-    margin-top:2.2rem;
-    text-align:right;
+  .letter p{font-size:1.07rem;line-height:1.9;color:#f3e8de;margin-bottom:1.35rem}
+  .drop::first-letter{
+    font-family:'Cormorant Garamond',serif;font-size:2.6em;float:left;line-height:.9;
+    padding-right:.12em;color:var(--gold);
   }
-  .divider{
-    width:44px;height:1px;
-    background:rgba(244,236,228,0.35);
-    margin:2.6rem auto;
+  .divider{display:flex;align-items:center;gap:.8rem;margin:2.2rem auto}
+  .divider::before,.divider::after{content:"";height:1px;flex:1;background:rgba(244,236,228,.25)}
+  .divider span{color:var(--gold);font-size:1.1rem}
+  .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:0 0 1.8rem}
+  .trio div{background:rgba(20,14,24,.35);border:1px solid var(--line);border-radius:10px;padding:.9rem .6rem;text-align:center}
+  .trio b{display:block;font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--gold);margin-bottom:.2rem}
+  .trio small{color:#e6d2c6;font-size:.78rem;letter-spacing:.03em}
+  .signature{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;color:var(--gold);margin-top:1.6rem;text-align:right}
+  .actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:2rem}
+  .links{display:flex;gap:1rem;justify-content:center;margin-top:1rem;font-size:.85rem}
+  .links a{color:#eed9cc;text-decoration:none;border-bottom:1px dotted rgba(238,217,204,.5)}
+  footer{padding-bottom:7vh;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:#e3c8bb;text-align:center}
+  #musicBtn{
+    position:fixed;right:1rem;bottom:1rem;z-index:20;
+    width:52px;height:52px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(20,14,24,.6);color:var(--gold);font-size:1.3rem;cursor:pointer;
+    backdrop-filter:blur(6px);box-shadow:0 10px 28px rgba(0,0,0,.35);
   }
-  footer{
-    padding-bottom:6vh;
-    font-family:'Cormorant Garamond',serif;
-    font-style:italic;
-    font-size:0.95rem;
-    color:#d9c2b8;
-    text-align:center;
+  #musicBtn.playing{background:linear-gradient(135deg,#d9b26a,#b9824f);color:#2a1f16}
+  .gallery{margin-top:2.4rem;text-align:center}
+  .gallery h2{font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:500;margin-bottom:.3rem}
+  .gallery > p{color:#e9d3c6;font-size:.92rem;margin-bottom:1.2rem}
+  .heart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;justify-items:center}
+  .heart-photo{
+    width:100%;max-width:190px;aspect-ratio:1/1;position:relative;
+    -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 88 C18 62 4 42 4 26 C4 11 15 3 28 3 C39 3 47 11 50 20 C53 11 61 3 72 3 C85 3 96 11 96 26 C96 42 82 62 50 88 Z"/></svg>') center/contain no-repeat;
+    mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 88 C18 62 4 42 4 26 C4 11 15 3 28 3 C39 3 47 11 50 20 C53 11 61 3 72 3 C85 3 96 11 96 26 C96 42 82 62 50 88 Z"/></svg>') center/contain no-repeat;
+    background:#3a2c3a;transition:transform .25s ease;cursor:pointer;
   }
+  .heart-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .heart-photo:hover{transform:scale(1.06) rotate(-1deg)}
+  @media (max-width:520px){.trio{grid-template-columns:1fr}.heart-grid{grid-template-columns:repeat(2,1fr)}}
   @media (prefers-reduced-motion: reduce){
-    .sun,h1,.subtitle{animation:none; opacity:1}
+    .moon,h1,.subtitle,.eyebrow,.music-pill{animation:none;opacity:1}
+    .petal{display:none}
   }
 </style>
 </head>
 <body>
 
+<canvas id="stars"></canvas>
+
 <div class="sky">
-  <div class="sun"></div>
-  <h1>Para Rosa Vargas</h1>
+  <div class="moon"></div>
+  <div class="eyebrow">para el amor de mi vida</div>
+  <h1>Para Rosa <span class="amp">&</span> Cristian</h1>
   <p class="subtitle">Nuestra historia no siempre ha sido buena pero no la cambiaria por nada</p>
+
+  <div class="music-pill">
+    <small>Nuestra canción · Primera Cita</small>
+    <button class="btn gold" id="playTop">Reproducir</button>
+  </div>
 </div>
 
 <main>
   <div class="letter">
-    <p>Mi amor yo se que hemos tenido ultimamente una relacion bastante dificil por que ha habido muchos errores de parte de ambos mas mios yo se y te quiero pedir una gran disculpa por que soy un estupido</p>
-    <div class="divider"></div>
+    <div class="trio">
+      <div><b>Perdón</b><small>por mis errores</small></div>
+      <div><b>Gracias</b><small>por quedarte</small></div>
+      <div><b>Siempre</b><small>contigo</small></div>
+    </div>
+
+    <p class="drop">Mi amor yo se que hemos tenido ultimamente una relacion bastante dificil por que ha habido muchos errores de parte de ambos mas mios yo se y te quiero pedir una gran disculpa por que soy un estupido</p>
+
+    <p>Si esta página suena, es porque cada vez que escucho <i>Primera Cita</i> me acuerdo de ti y de volver a empezar como la primera vez.</p>
+
+    <div class="divider"><span>♥</span></div>
+
+    <div class="actions">
+      <button class="btn gold" id="burst">Lluvia de corazones</button>
+      <button class="btn" id="playMid">Poner música</button>
+    </div>
+    <div class="links">
+      <a href="https://www.youtube.com/results?search_query=carin+leon+primera+cita" target="_blank" rel="noopener">Abrir en YouTube</a>
+      <a href="https://open.spotify.com/search/primera%20cita%20carin%20leon" target="_blank" rel="noopener">Abrir en Spotify</a>
+    </div>
+
     <p class="signature">Con cariño, siempre.</p>
   </div>
+
+  <!--
+    FOTOS EN CORAZÓN: son de prueba (picsum). Cámbialas por las tuyas:
+    sustituye cada src por tu raw, ej:
+    https://raw.githubusercontent.com/Cyaofc/Rosa/main/foto1.jpg
+    .../foto2.jpg .../foto3.jpg .../foto4.jpg .../img1.jpg .../img2.jpg
+  -->
+  <section class="gallery">
+    <h2>Nuestros momentos</h2>
+    <p>Toca un corazón · cambia cada foto por la tuya en el código</p>
+    <div class="heart-grid">
+      <div class="heart-photo"><img src="https://picsum.photos/seed/rosa1/500/500" alt="Recuerdo 1" loading="lazy"></div>
+      <div class="heart-photo"><img src="https://picsum.photos/seed/rosa2/500/500" alt="Recuerdo 2" loading="lazy"></div>
+      <div class="heart-photo"><img src="https://picsum.photos/seed/rosa3/500/500" alt="Recuerdo 3" loading="lazy"></div>
+      <div class="heart-photo"><img src="https://picsum.photos/seed/rosa4/500/500" alt="Recuerdo 4" loading="lazy"></div>
+      <div class="heart-photo"><img src="https://picsum.photos/seed/rosa5/500/500" alt="Recuerdo 5" loading="lazy"></div>
+      <div class="heart-photo"><img src="https://picsum.photos/seed/rosa6/500/500" alt="Recuerdo 6" loading="lazy"></div>
+    </div>
+  </section>
 </main>
 
-<footer>hecho con lo que quedó del corazón</footer>
+<footer>hecho con lo que quedó del corazón · <span id="year"></span></footer>
+
+<button id="musicBtn" title="Música">♪</button>
+
+<!--
+  MÚSICA: archivo en tu repo GitHub (Cyaofc/Rosa).
+  Raw directo: https://raw.githubusercontent.com/Cyaofc/Rosa/main/musica.mp3
+  Los navegadores exigen pulsar Reproducir para sonar.
+-->
+<audio id="bgm" loop preload="auto" src="https://raw.githubusercontent.com/Cyaofc/Rosa/main/musica.mp3"></audio>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Estrellas suaves
+  (function(){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var c = document.getElementById('stars'), x = c.getContext('2d'), s = [];
+    function size(){ c.width = innerWidth; c.height = innerHeight; }
+    size(); addEventListener('resize', size);
+    for (var i = 0; i < 90; i++) s.push({x:Math.random(), y:Math.random(), r:Math.random()*1.4+.3, t:Math.random()*Math.PI*2});
+    (function tick(){
+      x.clearRect(0,0,c.width,c.height);
+      x.fillStyle = 'rgba(255,240,220,0.7)';
+      s.forEach(function(p){
+        p.t += 0.02;
+        var a = 0.25 + Math.abs(Math.sin(p.t)) * 0.55;
+        x.globalAlpha = a;
+        x.beginPath(); x.arc(p.x*c.width, p.y*c.height*0.7, p.r, 0, 7); x.fill();
+      });
+      x.globalAlpha = 1;
+      requestAnimationFrame(tick);
+    })();
+  })();
+
+  // Pétalos / corazones flotando
+  var EMO = ['♥','🌸','✦','♥','🌷'];
+  function petal(ch){
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var el = document.createElement('div');
+    el.className = 'petal';
+    el.textContent = ch || EMO[Math.floor(Math.random()*EMO.length)];
+    el.style.left = (Math.random()*96) + 'vw';
+    el.style.fontSize = (14 + Math.random()*20) + 'px';
+    el.style.color = Math.random() > .5 ? '#e9b7a6' : '#d4af6e';
+    el.style.animationDuration = (6 + Math.random()*7) + 's';
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 14000);
+  }
+  setInterval(petal, 1400);
+  document.getElementById('burst').onclick = function(){
+    for (var i = 0; i < 26; i++) setTimeout(function(){ petal('♥'); }, i*70);
+  };
+
+  // Música: solo suena al pulsar (los navegadores lo exigen)
+  var audio = document.getElementById('bgm');
+  var btns = [document.getElementById('playTop'), document.getElementById('playMid'), document.getElementById('musicBtn')];
+  function setUI(playing){
+    btns.forEach(function(b){
+      if (!b) return;
+      if (b.id === 'musicBtn'){ b.classList.toggle('playing', playing); b.textContent = playing ? '❚❚' : '♪'; }
+      else b.textContent = playing ? 'Pausar' : (b.id === 'playTop' ? 'Reproducir' : 'Poner música');
+    });
+  }
+  function toggle(){
+    if (!audio.getAttribute('src')) return;
+    if (audio.paused){
+      audio.play().then(function(){ setUI(true); }).catch(function(){
+        alert('No se pudo cargar la música de GitHub. Revisa el link raw o usa YouTube/Spotify.');
+      });
+    } else { audio.pause(); setUI(false); }
+  }
+  btns.forEach(function(b){ if (b) b.onclick = toggle; });
+  audio.addEventListener('error', function(){
+    setUI(false);
+  }, true);
+</script>
 
 </body>
 </html>
